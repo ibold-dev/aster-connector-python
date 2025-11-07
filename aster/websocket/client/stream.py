@@ -9,7 +9,7 @@ class WebsocketClient(AsterWebsocketClient):
         """
         | **Aggregate Trade Stream**
         | *The Aggregate Trade Streams push market trade information that is aggregated for a single taker order every 100 milliseconds.*
-        
+
         :Stream name: ``<symbol>@aggTrade``
         :Doc: https://github.com/asterdex/api-docs/blob/master/aster-finance-api.md#aggregate-trade-streams
         """
@@ -22,7 +22,7 @@ class WebsocketClient(AsterWebsocketClient):
         """
         | **Mark Price Stream**
         | *Mark price and funding rate for a single symbol pushed every 3 seconds or every second.*
-        
+
         :Stream name: ``<symbol>@markPrice`` or ``<symbol>@markPrice@1s``
         :Doc: https://github.com/asterdex/api-docs/blob/master/aster-finance-api.md#mark-price-stream
         """
@@ -40,22 +40,22 @@ class WebsocketClient(AsterWebsocketClient):
         """
         | **Mark Price Stream for All market**
         | *Mark price and funding rate for all symbols pushed every 3 seconds or every second.*
-        
+
         :Stream name: ``!markPrice@arr`` or ``!markPrice@arr@1s``
         :Doc: https://github.com/asterdex/api-docs/blob/master/aster-finance-api.md#mark-price-stream-for-all-market
         """
         if speed is None:
-            self.live_subscribe("{!markPrice@arr", id, callback, **kwargs)
+            self.live_subscribe("!markPrice@arr", id, callback, **kwargs)
         else:
-            self.live_subscribe(
-                "{!markPrice@arr@{}s".format(speed), id, callback, **kwargs
-            )
+            # Use % formatting to avoid issues with {! in format strings
+            stream_name = "!markPrice@arr@%ds" % speed
+            self.live_subscribe(stream_name, id, callback, **kwargs)
 
     def kline(self, symbol: str, id: int, interval: str, callback, **kwargs):
         """
         | **Kline/Candlestick Streams**
         | *The Kline/Candlestick Stream push updates to the current klines/candlestick every 250 milliseconds (if existing).*
-        
+
         :Stream name: ``<symbol>@kline_<interval>``
         :Doc: https://github.com/asterdex/api-docs/blob/master/aster-finance-api.md#klinecandlestick-streams
         """
@@ -68,7 +68,7 @@ class WebsocketClient(AsterWebsocketClient):
         """
         | **Individual Symbol or All Market Mini Ticker Stream**
         | *24hr rolling window mini-ticker statistics for a single symbol or all market. These are NOT the statistics of the UTC day, but a 24hr rolling window from requestTime to 24hrs before.*
-        
+
         :Stream name: ``<symbol>@miniTicker``
         :Stream name: ``!miniTicker@arr``
         :Doc: https://github.com/asterdex/api-docs/blob/master/aster-finance-api.md#individual-symbol-mini-ticker-stream
@@ -86,7 +86,7 @@ class WebsocketClient(AsterWebsocketClient):
         """
         | **Individual Symbol or All Market Ticker Streams**
         | *24hr rollwing window ticker statistics for a single symbol or all market. These are NOT the statistics of the UTC day, but a 24hr rolling window from requestTime to 24hrs before.*
-        
+
         :Stream name: ``<symbol>@ticker``
         :Stream name: ``!ticker@arr``
         :Doc: https://github.com/asterdex/api-docs/blob/master/aster-finance-api.md#individual-symbol-ticker-streams
@@ -104,7 +104,7 @@ class WebsocketClient(AsterWebsocketClient):
         """
         | **Individual Symbol or All Market Book Ticker Streams**
         | *Pushes any update to the best bid or ask's price or quantity in real-time for a specified symbol or all market.*
-        
+
         :Stream name: ``<symbol>@bookTicker``
         :Stream name: ``!bookTicker``
         :Doc: https://github.com/asterdex/api-docs/blob/master/aster-finance-api.md#individual-symbol-book-ticker-streams
@@ -122,7 +122,7 @@ class WebsocketClient(AsterWebsocketClient):
         """
         | **Liquidation Order Streams**
         | *The Liquidation Order Snapshot Streams push force liquidation order information for specific symbol or all market.*
-        
+
         :Stream name: ``<symbol>@forceOrder``
         :Stream name: ``!forceOrder@arr``
         :Doc: https://github.com/asterdex/api-docs/blob/master/aster-finance-api.md#liquidation-order-streams
@@ -140,7 +140,7 @@ class WebsocketClient(AsterWebsocketClient):
         """
         | **Partial Book Depth Streams**
         | *Top <levels> bids and asks, Valid <levels> are 5, 10, or 20. Valid <speed> are 250, 500, or 100*
-        
+
         :Stream name: ``<symbol>@depth<levels>`` or ``<symbol>@depth<levels>@500ms`` or ``<symbol>@depth<levels>@100ms``
         :Doc: https://github.com/asterdex/api-docss/blob/master/aster-finance-api.md#partial-book-depth-streams
         """
@@ -153,7 +153,7 @@ class WebsocketClient(AsterWebsocketClient):
         """
         | **Diff. Book Depth Streams**
         | *Bids and asks, pushed every 250 milliseconds, 500 milliseconds, 100 milliseconds (if existing)*
-        
+
         :Stream name: ``<symbol>@depth`` or ``<symbol>@depth@500ms`` or ``<symbol>@depth@100ms``
         :Doc: https://github.com/asterdex/api-docs/blob/master/aster-finance-api.md#diff-book-depth-streams
         """

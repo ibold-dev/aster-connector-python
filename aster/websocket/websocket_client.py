@@ -1,5 +1,4 @@
 import json
-from twisted.internet import reactor
 from aster.websocket.aster_socket_manager import AsterSocketManager
 
 
@@ -8,10 +7,7 @@ class AsterWebsocketClient(AsterSocketManager):
         super().__init__(stream_url)
 
     def stop(self):
-        try:
-            self.close()
-        finally:
-            reactor.stop()
+        self.close()
 
     def _single_stream(self, stream):
         if isinstance(stream, str):

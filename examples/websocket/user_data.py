@@ -16,7 +16,6 @@ response = client.new_listen_key()
 logging.info("Receving listen key : {}".format(response["listenKey"]))
 
 ws_client = WebsocketClient()
-ws_client.start()
 
 ws_client.user_data(
     listen_key=response["listenKey"],

@@ -9,7 +9,6 @@ def message_handler(message):
     print(message)
 
 my_client = Client()
-my_client.start()
 
 my_client.liquidation_order(
     id=13,

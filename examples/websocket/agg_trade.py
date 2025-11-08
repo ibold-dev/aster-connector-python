@@ -5,11 +5,12 @@ from aster.websocket.client.stream import WebsocketClient as Client
 
 config_logging(logging, logging.DEBUG)
 
+
 def message_handler(message):
     print(message)
 
+
 my_client = Client()
-my_client.start()
 
 my_client.agg_trade(
     symbol="btcusdt",

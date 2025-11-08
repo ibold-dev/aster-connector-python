@@ -10,7 +10,6 @@ def message_handler(message):
     print(message)
 
 my_client = Client()
-my_client.start()
 
 my_client.partial_book_depth(
     symbol="bnbusdt",
